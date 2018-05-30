@@ -9,7 +9,6 @@ other than global & page metadata is removed, and reporting status is reset
 # %% setup
 
 import yaml
-import glob
 import os
 import sys
 from sdg.path import get_ids, input_path

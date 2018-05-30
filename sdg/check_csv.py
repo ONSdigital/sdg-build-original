@@ -7,7 +7,6 @@ Created on 2017-10-04
 
 # %% setup
 
-import glob
 import pandas as pd
 import numpy as np
 from sdg.path import input_path, get_ids

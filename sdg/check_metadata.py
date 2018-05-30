@@ -8,7 +8,6 @@ Created on Thu May  4 13:53:01 2017
 # %% setup
 
 import yaml
-import glob
 from sdg.path import input_path, get_ids
 
 # %% Checking a single item

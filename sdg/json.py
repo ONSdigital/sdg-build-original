@@ -19,7 +19,6 @@ version but I'm keeping it as it can be useful for nested json.
 # %% setup
 import pandas as pd
 import numpy as np
-import glob
 import os.path
 import math
 import json
