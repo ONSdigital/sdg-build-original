@@ -5,18 +5,18 @@ from sdg import reset_all_csv, reset_all_meta
 import pandas as pd
 import yaml
 
-root = os.path.dirname(os.path.realpath(__file__))
+src_dir = os.path.dirname(os.path.realpath(__file__))
 
 def test_reset_csv():
     """Check that output_path is as expected"""
 
-    testroot = os.path.join(root, 'testroot')
+    testroot = os.path.join(src_dir, 'testroot')
 
     os.makedirs(testroot, exist_ok=False)
-    shutil.copytree(os.path.join(root, 'data'), os.path.join(testroot, 'data'))
-    shutil.copytree(os.path.join(root, 'meta'), os.path.join(testroot, 'meta'))
+    shutil.copytree(os.path.join(src_dir, 'data'), os.path.join(testroot, 'data'))
+    shutil.copytree(os.path.join(src_dir, 'meta'), os.path.join(testroot, 'meta'))
 
-    reset_all_csv(root=testroot)
+    reset_all_csv(src_dir=testroot)
 
     df = pd.read_csv(os.path.join(testroot, 'data', 'indicator_1-2-1.csv'))
     assert df.shape == (6, 3)
@@ -27,13 +27,13 @@ def test_reset_csv():
 def test_reset_meta():
     """Check that output_path is as expected"""
 
-    testroot = os.path.join(root, 'testroot2')
+    testroot = os.path.join(src_dir, 'testroot2')
 
     os.makedirs(testroot, exist_ok=False)
-    shutil.copytree(os.path.join(root, 'meta'), os.path.join(testroot, 'meta'))
-    shutil.copy(os.path.join(root, '_prose.yml'), os.path.join(testroot, '_prose.yml'))
+    shutil.copytree(os.path.join(src_dir, 'meta'), os.path.join(testroot, 'meta'))
+    shutil.copy(os.path.join(src_dir, '_prose.yml'), os.path.join(testroot, '_prose.yml'))
 
-    reset_all_meta(root=testroot)
+    reset_all_meta(src_dir=testroot)
 
 
     with open(os.path.join(testroot, 'meta', '1-2-1.md'), encoding="UTF-8") as stream:
