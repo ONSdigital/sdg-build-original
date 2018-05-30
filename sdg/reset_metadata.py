@@ -65,11 +65,9 @@ def reset_meta(meta, fname, keep_fields):
             }
 
     # Add the defaults
-    if sys.version_info<(3,5,0):
-        final_meta = keep_meta.copy()
-        final_meta.update(add_fields)
-    else:
-        final_meta = {**keep_meta, **add_fields}
+    final_meta = keep_meta.copy()
+    final_meta.update(add_fields)
+    # final_meta = {**keep_meta, **add_fields} # this is python >=3.5
 
     # Write to a string first because I want to override trailing dots
     yaml_string = yaml.dump(final_meta,
