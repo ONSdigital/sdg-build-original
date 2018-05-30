@@ -7,12 +7,11 @@ import yaml
 
 src_dir = os.path.dirname(os.path.realpath(__file__))
 
-def test_reset_csv():
-    """Check that output_path is as expected"""
+def test_reset_csv(tmpdir):
+    """Check reset csvs work"""
 
-    testroot = os.path.join(src_dir, 'testroot')
+    testroot = tmpdir.mkdir('resetcsv')
 
-    os.makedirs(testroot, exist_ok=False)
     shutil.copytree(os.path.join(src_dir, 'data'), os.path.join(testroot, 'data'))
     shutil.copytree(os.path.join(src_dir, 'meta'), os.path.join(testroot, 'meta'))
 
@@ -21,26 +20,18 @@ def test_reset_csv():
     df = pd.read_csv(os.path.join(testroot, 'data', 'indicator_1-2-1.csv'))
     assert df.shape == (6, 3)
 
-    # poor man's teardown
-    shutil.rmtree(testroot)
+def test_reset_meta(tmpdir):
+    """Check reset metadata"""
 
-def test_reset_meta():
-    """Check that output_path is as expected"""
+    testroot = tmpdir.mkdir('resetmeta')
 
-    testroot = os.path.join(src_dir, 'testroot2')
-
-    os.makedirs(testroot, exist_ok=False)
     shutil.copytree(os.path.join(src_dir, 'meta'), os.path.join(testroot, 'meta'))
     shutil.copy(os.path.join(src_dir, '_prose.yml'), os.path.join(testroot, '_prose.yml'))
 
     reset_all_meta(src_dir=testroot)
-
 
     with open(os.path.join(testroot, 'meta', '1-2-1.md'), encoding="UTF-8") as stream:
         meta = next(yaml.safe_load_all(stream))
     
     assert meta['indicator'] == '1.2.1'
     assert meta['reporting_status'] == 'notstarted'
-
-    # poor man's teardown
-    shutil.rmtree(testroot)
