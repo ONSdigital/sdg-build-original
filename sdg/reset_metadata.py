@@ -11,6 +11,7 @@ other than global & page metadata is removed, and reporting status is reset
 import yaml
 import glob
 import os
+import sys
 from sdg.path import get_ids, input_path
 
 # %% A dictionary of defaults to add
@@ -64,8 +65,11 @@ def reset_meta(meta, fname, keep_fields):
             }
 
     # Add the defaults
-    final_meta = {**keep_meta, **add_fields}
-
+    if sys.version_info<(3,5,0):
+        final_meta = keep_meta.copy()
+        final_meta.update(add_fields)
+    else:
+        final_meta = {**keep_meta, **add_fields}
 
     # Write to a string first because I want to override trailing dots
     yaml_string = yaml.dump(final_meta,
