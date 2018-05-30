@@ -10,7 +10,7 @@ src_dir = os.path.dirname(os.path.realpath(__file__))
 def test_reset_csv(tmpdir):
     """Check reset csvs work"""
 
-    testroot = tmpdir.mkdir('resetcsv')
+    testroot = str(tmpdir.mkdir('resetcsv'))
 
     shutil.copytree(os.path.join(src_dir, 'data'), os.path.join(testroot, 'data'))
     shutil.copytree(os.path.join(src_dir, 'meta'), os.path.join(testroot, 'meta'))
@@ -23,7 +23,7 @@ def test_reset_csv(tmpdir):
 def test_reset_meta(tmpdir):
     """Check reset metadata"""
 
-    testroot = tmpdir.mkdir('resetmeta')
+    testroot = str(tmpdir.mkdir('resetmeta'))
 
     shutil.copytree(os.path.join(src_dir, 'meta'), os.path.join(testroot, 'meta'))
     shutil.copy(os.path.join(src_dir, '_prose.yml'), os.path.join(testroot, '_prose.yml'))

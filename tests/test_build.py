@@ -12,7 +12,7 @@ src_dir = os.path.dirname(os.path.realpath(__file__))
 @pytest.fixture(scope='session')
 def test_site_dir(tmpdir_factory):
     site_dir = tmpdir_factory.mktemp('_site')
-    return site_dir
+    return str(site_dir)
 
 def test_build(test_site_dir):
     """Check that output_path is as expected"""
