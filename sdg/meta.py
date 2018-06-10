@@ -23,6 +23,7 @@ def read_meta(inid, git=True, src_dir=''):
         git_update = sdg.git.get_git_updates(inid, src_dir=src_dir)
         for k in git_update.keys():
             meta[k] = git_update[k]
+        print(inid + '  ' + meta['national_data_update_url'])
             
     meta['page_content'] = ''.join(meta_md[1])
 
