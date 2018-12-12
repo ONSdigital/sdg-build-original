@@ -46,6 +46,8 @@ def x_without_y(x, y):
         x (pandas Series): Left hand column
         y (pandas Series): Right hand column
     """
+ # returns true if both y.isnull() is true and x.notnull() is true
+ # this is the 'edge' - where the left column has an entry but the right column does not 
     return np.any(y.isnull() & x.notnull())
 
 
@@ -58,6 +60,10 @@ def detect_all_edges(inid, df):
     edges = pd.DataFrame(columns=['From', 'To'])
 
     # Loop over all pairs
+    # itertools.combinations returns pairs of columns in the order they appear
+    # so: combinations('ABCD', 2)	produces AB AC AD BC BD CD
+    # note that this has no repeating elements (so no BA, CA) - in the context of this
+    # script, it will only find edges on the right-hand side
     for a, b in itertools.combinations(cols, 2):
         # Check if a and b are ever present without each other
         a_without_b = x_without_y(df[a], df[b])
@@ -68,15 +74,16 @@ def detect_all_edges(inid, df):
         b_not_empty = not df[b].dropna().empty
 
         if a_without_b and not b_without_a and b_not_empty:
-            # A is a parent of B
+            # If ↑ true, then whenever there a B, there is always A. A is a parent of B.
             edges = edges.append(pd.DataFrame({'From': [a], 'To': [b]}))
         elif b_without_a and not a_without_b and a_not_empty:
-            # B is a parent of A
+            # If ↑ true, then whenever there a A, there is always B. B is a parent of A.
             edges = edges.append(pd.DataFrame({'From': [b], 'To': [a]}))
         elif not a_without_b and not b_without_a and a_not_empty and b_not_empty:
-            # Co-Depedent. Choose A as left-most.
+            # Both exist and neither are empty (Co-Depedent). Choose A as left-most.
             edges = edges.append(pd.DataFrame({'From': [a], 'To': [b]}))
 
+    # Returns full appended list of edges after running through the whole data frame
     return edges
 
 
